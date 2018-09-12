@@ -267,6 +267,57 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
+    start_node = problem.getStartState()
+    print start_node
+
+    visited_nodes = []
+    result_directions = []
+    astar_pqueue = PriorityQueue()
+    dict_path = {}
+    astar_pqueue.push(start_node, 0)
+
+    dict_path[start_node] = {}
+    dict_path[start_node]['parent'] = None
+    dict_path[start_node]['direction'] = None
+    dict_path[start_node]['cost'] = 0
+
+    goal_node = None
+
+    while not astar_pqueue.isEmpty():
+        traverse_node = astar_pqueue.pop()
+        # print traverse_node
+        #
+        if traverse_node not in visited_nodes:
+
+            visited_nodes.append(traverse_node)
+
+            if problem.isGoalState(traverse_node):
+                goal_node = traverse_node
+                print goal_node
+                break
+
+            successor_list = problem.getSuccessors(traverse_node)
+
+            if len(successor_list) > 0:
+                for successor in successor_list:
+                    if successor[0] in visited_nodes:
+                        continue
+
+                    dict_path[successor[0]] = {}
+                    dict_path[successor[0]]['parent'] = traverse_node
+                    dict_path[successor[0]]['direction'] = successor[1]
+                    dict_path[successor[0]]['cost'] = dict_path[traverse_node]['cost'] + successor[2] + heuristic(successor[0], problem) - heuristic(traverse_node, problem)
+                    astar_pqueue.push(successor[0], dict_path[successor[0]]['cost'])
+
+    print(dict_path)
+    #####
+    curr_node = goal_node
+
+    while dict_path[curr_node]['parent']:
+        result_directions.insert(0, dict_path[curr_node]['direction'])
+        curr_node = dict_path[curr_node]['parent']
+
+    return result_directions
     util.raiseNotDefined()
 
 
