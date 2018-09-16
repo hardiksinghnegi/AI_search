@@ -149,17 +149,13 @@ def breadthFirstSearch(problem):
     start_node = problem.getStartState()
 
     visited_nodes = []
-    result_directions = []
+    result_directions = None
     bfs_queue = Queue()
     dict_path = {}
 
     bfs_queue.push(start_node)
 
-    dict_path[start_node] = {}
-    dict_path[start_node]['parent'] = None
-    dict_path[start_node]['direction'] = None
-
-    start_flag = 0
+    dict_path[start_node] = []
 
     goal_node = None
 
@@ -182,19 +178,20 @@ def breadthFirstSearch(problem):
                     if successor[0] in visited_nodes:
                         continue
 
-                    dict_path[successor[0]] = {}
-                    dict_path[successor[0]]['parent'] = traverse_node
-                    dict_path[successor[0]]['direction'] = successor[1]
+                    dict_path[successor[0]] = dict_path[traverse_node]+[successor[1]]
                     bfs_queue.push(successor[0])
 
     # print dict_path
 
-    curr_node = goal_node
+    result_directions = dict_path[goal_node]
 
-    while dict_path[curr_node]['parent']:
-        result_directions.insert(0, dict_path[curr_node]['direction'])
-        curr_node = dict_path[curr_node]['parent']
 
+    # curr_node = goal_node
+    #
+    # while dict_path[curr_node]['parent']:
+    #     result_directions.insert(0, dict_path[curr_node]['direction'])
+    #     curr_node = dict_path[curr_node]['parent']
+    #
     return result_directions
     util.raiseNotDefined()
 
