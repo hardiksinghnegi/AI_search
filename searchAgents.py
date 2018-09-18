@@ -364,6 +364,54 @@ class CornersProblem(search.SearchProblem):
         return len(actions)
 
 
+
+
+
+def cornerHe(state):
+
+    heuristic = 0
+    if len(state[1])>0:
+        min_cost = 999999
+        node = state[0]
+        for corner in state[1]:
+            manhattanDist = abs(state[0][0] - corner[0]) + abs(state[0][1] - corner[1])
+            if (manhattanDist<min_cost):
+                min_cost = manhattanDist
+                node = corner
+            # print min_cost
+        tmp_state = list(state[1])
+        tmp_state.remove(corner)
+        heuristic = min_cost
+        print 'heuristic', heuristic
+        heuristic += cornerHelper((node, tmp_state))
+
+
+    else:
+        print heuristic
+        return heuristic
+
+def cornerHelper(node,cornerList):
+
+    heuristic = 0
+
+    if len(cornerList) == 0:
+        return heuristic
+
+    minCost = 999999
+    tmpNode = node
+
+    for corner in cornerList:
+        manhattanDist = abs(node[0] - corner[0]) + abs(node[1] - corner[1])
+        if manhattanDist < minCost:
+            minCost = manhattanDist
+            tmpNode = corner
+
+    node = tmpNode
+    cornerList.remove(tmpNode)
+    return minCost + cornerHelper(node, cornerList)
+
+
+
 def cornersHeuristic(state, problem):
     """
     A heuristic for the CornersProblem that you defined.
@@ -381,7 +429,10 @@ def cornersHeuristic(state, problem):
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
-    return 0 # Default to trivial solution
+    node = state[0]
+    cornerList = list(state[1])
+
+    return cornerHelper(node,cornerList)
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
@@ -475,7 +526,7 @@ def foodHeuristic(state, problem):
     """
     position, foodGrid = state
     "*** YOUR CODE HERE ***"
-    return 0
+    return cornerHelper(position,foodGrid.asList())
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
