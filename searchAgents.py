@@ -526,7 +526,8 @@ def foodHeuristic(state, problem):
     """
     position, foodGrid = state
     "*** YOUR CODE HERE ***"
-    return cornerHelper(position,foodGrid.asList())
+    return cornerHelper(position, foodGrid.asList())
+
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"

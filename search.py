@@ -136,40 +136,26 @@ def breadthFirstSearch(problem):
 
     visited_nodes = []
     bfs_queue = Queue()
-    dict_path = {}
 
-    bfs_queue.push(start_node)
+    bfs_queue.push((start_node,[],0))
 
-    dict_path[start_node] = []
-
-    goal_node = None
 
     while not bfs_queue.isEmpty():
         traverse_node = bfs_queue.pop()
 
-        if traverse_node not in visited_nodes:
+        if problem.isGoalState(traverse_node[0]):
+            return traverse_node[1]
 
-            visited_nodes.append(traverse_node)
+        if traverse_node[0] not in visited_nodes:
 
-            if problem.isGoalState(traverse_node):
-                goal_node = traverse_node
-                break
+            visited_nodes.append(traverse_node[0])
 
-            successor_list = problem.getSuccessors(traverse_node)
+            successor_list = problem.getSuccessors(traverse_node[0])
 
-            if len(successor_list) > 0:
-                for successor in successor_list:
-                    if successor[0] in visited_nodes:
-                        continue
-
-                    dict_path[successor[0]] = dict_path[traverse_node]+[successor[1]]
-                    bfs_queue.push(successor[0])
+            for successor in successor_list:
+                bfs_queue.push((successor[0],traverse_node[1]+[successor[1]],successor[2]))
 
 
-
-    result_directions = dict_path[goal_node]
-
-    return result_directions
     util.raiseNotDefined()
 
 def uniformCostSearch(problem):
@@ -179,44 +165,25 @@ def uniformCostSearch(problem):
     start_node = problem.getStartState()
 
     visited_nodes = []
-    ucs_pqueue = PriorityQueue()
-    dict_path = {}
+    ucs_queue = PriorityQueue()
 
-    ucs_pqueue.push(start_node,0)
+    ucs_queue.push((start_node, [], 0),0)
 
-    dict_path[start_node] = {}
-    dict_path[start_node]['direction_list'] = []
-    dict_path[start_node]['cost'] = 0
+    while not ucs_queue.isEmpty():
+        traverse_node = ucs_queue.pop()
 
-    goal_node = None
+        if problem.isGoalState(traverse_node[0]):
+            return traverse_node[1]
 
-    while not ucs_pqueue.isEmpty():
-        traverse_node = ucs_pqueue.pop()
+        if traverse_node[0] not in visited_nodes:
 
-        if traverse_node not in visited_nodes:
+            visited_nodes.append(traverse_node[0])
 
-            visited_nodes.append(traverse_node)
+            successor_list = problem.getSuccessors(traverse_node[0])
 
-            if problem.isGoalState(traverse_node):
-                goal_node = traverse_node
-                break
+            for successor in successor_list:
+                ucs_queue.push((successor[0], traverse_node[1] + [successor[1]], successor[2]+traverse_node[2]),successor[2]+traverse_node[2])
 
-            successor_list = problem.getSuccessors(traverse_node)
-
-            if len(successor_list) > 0:
-                for successor in successor_list:
-                    if successor[0] in visited_nodes:
-                        continue
-
-                    dict_path[successor[0]] = {}
-                    dict_path[successor[0]]['direction_list'] = dict_path[traverse_node]['direction_list'] + [successor[1]]
-                    dict_path[successor[0]]['cost'] = dict_path[traverse_node]['cost'] + successor[2]
-
-                    ucs_pqueue.push(successor[0],dict_path[successor[0]]['cost'])
-
-    result_directions = dict_path[goal_node]['direction_list']
-
-    return result_directions
     util.raiseNotDefined()
 
 
@@ -230,48 +197,30 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
+    "*** YOUR CODE HERE ***"
     start_node = problem.getStartState()
 
     visited_nodes = []
-    astar_pqueue = PriorityQueue()
-    dict_path = {}
+    astar_queue = PriorityQueue()
 
-    astar_pqueue.push(start_node, 0)
+    astar_queue.push((start_node, [], 0), 0)
 
-    dict_path[start_node] = {}
-    dict_path[start_node]['direction_list'] = []
-    dict_path[start_node]['cost'] = 0
+    while not astar_queue.isEmpty():
+        traverse_node = astar_queue.pop()
 
-    goal_node = None
+        if problem.isGoalState(traverse_node[0]):
+            return traverse_node[1]
 
-    while not astar_pqueue.isEmpty():
-        traverse_node = astar_pqueue.pop()
+        if traverse_node[0] not in visited_nodes:
 
-        if traverse_node not in visited_nodes:
+            visited_nodes.append(traverse_node[0])
 
-            visited_nodes.append(traverse_node)
+            successor_list = problem.getSuccessors(traverse_node[0])
 
-            if problem.isGoalState(traverse_node):
-                goal_node = traverse_node
-                break
+            for successor in successor_list:
+                astar_queue.push((successor[0], traverse_node[1] + [successor[1]], successor[2] + traverse_node[2]),
+                               successor[2] + traverse_node[2]+heuristic(successor[0],problem))
 
-            successor_list = problem.getSuccessors(traverse_node)
-
-            if len(successor_list) > 0:
-                for successor in successor_list:
-                    if successor[0] in visited_nodes:
-                        continue
-
-                    dict_path[successor[0]] = {}
-                    dict_path[successor[0]]['direction_list'] = dict_path[traverse_node]['direction_list'] + [
-                        successor[1]]
-                    dict_path[successor[0]]['cost'] = dict_path[traverse_node]['cost'] + successor[2] + heuristic(successor[0], problem) - heuristic(traverse_node, problem)
-
-                    astar_pqueue.push(successor[0], dict_path[successor[0]]['cost'])
-
-    result_directions = dict_path[goal_node]['direction_list']
-
-    return result_directions
     util.raiseNotDefined()
 
 
