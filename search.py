@@ -81,7 +81,7 @@ def depthFirstSearch(problem):
     start_node = problem.getStartState()
 
     '''Initializing :
-       visited_node[]: List of visited
+       visited_node[]: List of visited nodes
        dfs_stack : Stack data structure imported from util.py for DFS traversal'''
     visited_nodes = []
     dfs_stack = Stack()
@@ -92,7 +92,7 @@ def depthFirstSearch(problem):
                          start_node already)
         start_tuple[2] : Cost to reach start_node from parent (0 as start_node has
                          no parent)'''
-    start_tuple = (start_node,[],0)
+    start_tuple = (start_node, [], 0)
 
     ''' Push the initial node in the stack to start the traversal'''
     dfs_stack.push(start_tuple)
@@ -120,7 +120,7 @@ def depthFirstSearch(problem):
                 for successor in successor_list:
                     if successor[0] not in visited_nodes:
                         direction_list = traverse_node[1]+[successor[1]]
-                        dfs_stack.push((successor[0],direction_list,successor[2]))
+                        dfs_stack.push((successor[0], direction_list, successor[2]))
 
 
     util.raiseNotDefined()
@@ -133,7 +133,7 @@ def breadthFirstSearch(problem):
     start_node = problem.getStartState()
 
     '''Initializing :
-       visited_node[]: List of visited
+       visited_node[]: List of visited nodes
        bfs_queue : Queue data structure imported from util.py for BFS traversal'''
 
     visited_nodes = []
@@ -146,7 +146,7 @@ def breadthFirstSearch(problem):
        start_tuple[2] : Cost to reach start_node from parent (0 as start_node has
                              no parent)'''
 
-    start_tuple = (start_node,[],0)
+    start_tuple = (start_node, [], 0)
 
     ''' Push the initial node in the queue to start the traversal'''
     bfs_queue.push(start_tuple)
@@ -173,7 +173,7 @@ def breadthFirstSearch(problem):
                 for successor in successor_list:
                     if successor[0] not in visited_nodes:
                         direction_list = traverse_node[1] + [successor[1]]
-                        bfs_queue.push((successor[0],direction_list,successor[2]))
+                        bfs_queue.push((successor[0], direction_list, successor[2]))
 
 
     util.raiseNotDefined()
@@ -186,7 +186,7 @@ def uniformCostSearch(problem):
     start_node = problem.getStartState()
 
     '''Initializing :
-       visited_node[]: List of visited
+       visited_node[]: List of visited nodes
        ucs_queue : Priority Queue data structure imported from util.py for UCS traversal'''
 
     visited_nodes = []
@@ -198,15 +198,15 @@ def uniformCostSearch(problem):
                              start_node already)
        start_tuple[2] : Cost to reach start_node from parent (0 as start_node has
                              no parent)'''
-    start_tuple = (start_node, [],0)
+    start_tuple = (start_node, [], 0)
 
     '''Push start tuple in the Priority Queue along with it's cost (0 in this case
        as we are at the start_node itself). Cost is used to assign priority'''
-    ucs_queue.push(start_tuple,0)
+    ucs_queue.push(start_tuple, 0)
 
     ''' Continue the UCS till the queue is not empty'''
     while not ucs_queue.isEmpty():
-        '''Pop the node withe lowest cost'''
+        '''Pop the node with the lowest cost'''
         traverse_node = ucs_queue.pop()
 
         ''' Check if the node is goal state'''
@@ -228,7 +228,7 @@ def uniformCostSearch(problem):
                     parent as well. This will allow us to keep track of total cost of
                     the path to the node.'''
                     direction_list = traverse_node[1] + [successor[1]]
-                    ucs_queue.push((successor[0], direction_list, successor[2]+traverse_node[2]),successor[2]+traverse_node[2])
+                    ucs_queue.push((successor[0], direction_list, successor[2] + traverse_node[2]), successor[2] + traverse_node[2])
 
     util.raiseNotDefined()
 
@@ -242,7 +242,6 @@ def nullHeuristic(state, problem=None):
 
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
-    "*** YOUR CODE HERE ***"
     "*** YOUR CODE HERE ***"
 
     '''Getting the Start state to start the Astar traversal'''
@@ -268,7 +267,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
 
     ''' Continue the Astar till the queue is not empty'''
     while not astar_queue.isEmpty():
-        '''Pop the node withe lowest (cost+heuristic)'''
+        '''Pop the node with the lowest (cost+heuristic)'''
         traverse_node = astar_queue.pop()
 
         ''' Check if the node is goal state'''

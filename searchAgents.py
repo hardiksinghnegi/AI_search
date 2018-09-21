@@ -304,8 +304,8 @@ class CornersProblem(search.SearchProblem):
         Returns whether this search state is a goal state of the problem.
         """
         "*** YOUR CODE HERE ***"
-        '''state[1]: Un visited Corners
-           So if state[1] is empty then this returns True becaue all corners have been visited'''
+        '''state[1]: Unvisited Corners
+           So if state[1] is empty then this returns True because all corners have been visited'''
         if len(state[1]) == 0:
             return True
         else:
@@ -325,7 +325,7 @@ class CornersProblem(search.SearchProblem):
         """
 
         '''successor[]: List of the successor to be returned
-           remaining_corner[]: List of Un visited corners'''
+           remaining_corner[]: List of Unvisited corners'''
         successors = []
         remaining_corners = state[1]
 
@@ -347,7 +347,7 @@ class CornersProblem(search.SearchProblem):
                     tmp_corner = list(tmp_corner)
                     tmp_corner.remove(nextState)
                     tmp_corner = tuple(tmp_corner)
-                    successors.append(((nextState,tmp_corner), action, cost))
+                    successors.append(((nextState, tmp_corner), action, cost))
                 else:
                     successors.append(((nextState, tmp_corner), action, cost))
 
@@ -380,7 +380,7 @@ def cornerHelper(node,cornerList):
     minCost = 999999
     tmpNode = node
 
-    '''Calculate the minimum total distance among all the remaining corners'''
+    '''Calculate the minimum total distance to visit all the remaining corners'''
     for corner in cornerList:
         manhattanDist = abs(node[0] - corner[0]) + abs(node[1] - corner[1])
         if manhattanDist < minCost:
@@ -414,9 +414,8 @@ def cornersHeuristic(state, problem):
     node = state[0]
     cornerList = list(state[1])
 
-    '''This recursion function cornerHelper calculates the Manhattan Distance of current position
-       to the nearest corner, and from that corner it calculates the minimum total Manhattan distance
-       among all the remaining corners in the UnVisited Corner List'''
+    '''This recursion function cornerHelper calculates the minimum total manhattan distance to visit all
+        the remaining corners in the unvisited list from the current position'''
 
     return cornerHelper(node,cornerList)
 
