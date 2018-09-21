@@ -118,7 +118,9 @@ def depthFirstSearch(problem):
 
             if len(successor_list)>0:
                 for successor in successor_list:
-                    dfs_stack.push((successor[0],traverse_node[1]+[successor[1]],successor[2]))
+                    if successor[0] not in visited_nodes:
+                        direction_list = traverse_node[1]+[successor[1]]
+                        dfs_stack.push((successor[0],direction_list,successor[2]))
 
 
     util.raiseNotDefined()
@@ -169,7 +171,9 @@ def breadthFirstSearch(problem):
 
             if len(successor_list)>0:
                 for successor in successor_list:
-                    bfs_queue.push((successor[0],traverse_node[1]+[successor[1]],successor[2]))
+                    if successor[0] not in visited_nodes:
+                        direction_list = traverse_node[1] + [successor[1]]
+                        bfs_queue.push((successor[0],direction_list,successor[2]))
 
 
     util.raiseNotDefined()
@@ -219,10 +223,12 @@ def uniformCostSearch(problem):
             successor_list = problem.getSuccessors(traverse_node[0])
 
             for successor in successor_list:
-                '''While pushing the node in the priority queue add the cost of it's
-                   parent as well. This will allow us to keep track of total cost of
-                   the path to the node.'''
-                ucs_queue.push((successor[0], traverse_node[1] + [successor[1]], successor[2]+traverse_node[2]),successor[2]+traverse_node[2])
+                if successor[0] not in visited_nodes:
+                    '''While pushing the node in the priority queue add the cost of it's
+                    parent as well. This will allow us to keep track of total cost of
+                    the path to the node.'''
+                    direction_list = traverse_node[1] + [successor[1]]
+                    ucs_queue.push((successor[0], direction_list, successor[2]+traverse_node[2]),successor[2]+traverse_node[2])
 
     util.raiseNotDefined()
 
@@ -279,12 +285,12 @@ def aStarSearch(problem, heuristic=nullHeuristic):
             successor_list = problem.getSuccessors(traverse_node[0])
 
             for successor in successor_list:
-
-                '''While pushing the node in the priority queue add the cost of it's
-                   parent and it's own heuristic as well. This will allow us to keep track of total cost of
-                   the path to the node with admissible heuristic too.'''
-                astar_queue.push((successor[0], traverse_node[1] + [successor[1]], successor[2] + traverse_node[2]),
-                               successor[2] + traverse_node[2]+heuristic(successor[0],problem))
+                if successor[0] not in visited_nodes:
+                    '''While pushing the node in the priority queue add the cost of it's
+                        parent and it's own heuristic as well. This will allow us to keep track of total cost of
+                        the path to the node with admissible heuristic too.'''
+                    direction_list = traverse_node[1] + [successor[1]]
+                    astar_queue.push((successor[0], direction_list, successor[2] + traverse_node[2]), successor[2] + traverse_node[2]+heuristic(successor[0],problem))
 
     util.raiseNotDefined()
 
