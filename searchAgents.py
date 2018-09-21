@@ -324,18 +324,25 @@ class CornersProblem(search.SearchProblem):
             is the incremental cost of expanding to that successor
         """
 
+        '''successor[]: List of the successor to be returned
+           remaining_corner[]: List of Un visited corners'''
         successors = []
         remaining_corners = state[1]
+
         for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
 
             "*** YOUR CODE HERE ***"
             x, y = state[0]
             dx, dy = Actions.directionToVector(action)
             nextx, nexty = int(x + dx), int(y + dy)
+
+            '''Check if the intended successor co-ordinates are walls or not'''
             if not self.walls[nextx][nexty]:
                 nextState = (nextx, nexty)
                 cost = 1
                 tmp_corner = remaining_corners
+                '''Check if the intended successor co-ordinates in Unvisited Corner List, if yes,
+                   remove them from that list and return the amended list and the successors'''
                 if nextState in self.corners and nextState in remaining_corners:
                     tmp_corner = list(tmp_corner)
                     tmp_corner.remove(nextState)
@@ -363,14 +370,17 @@ class CornersProblem(search.SearchProblem):
 
 def cornerHelper(node,cornerList):
 
+    '''Heuristic to be returned'''
     heuristic = 0
 
+    '''All corners visited so return'''
     if len(cornerList) == 0:
         return heuristic
 
     minCost = 999999
     tmpNode = node
 
+    '''Calculate the minimum total distance among all the remaining corners'''
     for corner in cornerList:
         manhattanDist = abs(node[0] - corner[0]) + abs(node[1] - corner[1])
         if manhattanDist < minCost:
@@ -400,8 +410,13 @@ def cornersHeuristic(state, problem):
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
+    '''Extract the Current position and remaining Unvisited corners'''
     node = state[0]
     cornerList = list(state[1])
+
+    '''This recursion function cornerHelper calculates the Manhattan Distance of current position
+       to the nearest corner, and from that corner it calculates the minimum total Manhattan distance
+       among all the remaining corners in the UnVisited Corner List'''
 
     return cornerHelper(node,cornerList)
 
@@ -497,12 +512,17 @@ def foodHeuristic(state, problem):
     """
     position, foodGrid = state
     "*** YOUR CODE HERE ***"
-    #return cornerHelper(position, foodGrid.asList())
+
+    '''Get the co-ordinates of all the food positions'''
     food_list = foodGrid.asList()
 
+    '''Initialize the heuristic'''
     heuristic = 0
-    for food in food_list:
-        heuristic = max(heuristic, abs(position[0] - food[0]) + abs(position[1] - food[1]))
+
+    '''Find the distance (Manhattan Distance) between the given position and the farthest node and
+       return it as a heuristic'''
+    for food_pos in food_list:
+        heuristic = max(heuristic, abs(position[0] - food_pos[0]) + abs(position[1] - food_pos[1]))
     return heuristic
 
 class ClosestDotSearchAgent(SearchAgent):
