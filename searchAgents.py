@@ -295,6 +295,7 @@ class CornersProblem(search.SearchProblem):
         space)
         """
         "*** YOUR CODE HERE ***"
+        '''Return the starting co-ordinates and the list of corners in the maze'''
         return (self.startingPosition, self.corners)
         util.raiseNotDefined()
 
@@ -303,6 +304,8 @@ class CornersProblem(search.SearchProblem):
         Returns whether this search state is a goal state of the problem.
         """
         "*** YOUR CODE HERE ***"
+        '''state[1]: Un visited Corners
+           So if state[1] is empty then this returns True becaue all corners have been visited'''
         if len(state[1]) == 0:
             return True
         else:
@@ -324,12 +327,6 @@ class CornersProblem(search.SearchProblem):
         successors = []
         remaining_corners = state[1]
         for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
-            # Add a successor state to the successor list if the action is legal
-            # Here's a code snippet for figuring out whether a new position hits a wall:
-            #   x,y = currentPosition
-            #   dx, dy = Actions.directionToVector(action)
-            #   nextx, nexty = int(x + dx), int(y + dy)
-            #   hitsWall = self.walls[nextx][nexty]
 
             "*** YOUR CODE HERE ***"
             x, y = state[0]
@@ -347,7 +344,7 @@ class CornersProblem(search.SearchProblem):
                 else:
                     successors.append(((nextState, tmp_corner), action, cost))
 
-        self._expanded += 1 # DO NOT CHANGE
+        self._expanded += 1
         return successors
 
     def getCostOfActions(self, actions):
@@ -363,32 +360,6 @@ class CornersProblem(search.SearchProblem):
             if self.walls[x][y]: return 999999
         return len(actions)
 
-
-
-
-
-def cornerHe(state):
-
-    heuristic = 0
-    if len(state[1])>0:
-        min_cost = 999999
-        node = state[0]
-        for corner in state[1]:
-            manhattanDist = abs(state[0][0] - corner[0]) + abs(state[0][1] - corner[1])
-            if (manhattanDist<min_cost):
-                min_cost = manhattanDist
-                node = corner
-            # print min_cost
-        tmp_state = list(state[1])
-        tmp_state.remove(corner)
-        heuristic = min_cost
-        print 'heuristic', heuristic
-        heuristic += cornerHelper((node, tmp_state))
-
-
-    else:
-        print heuristic
-        return heuristic
 
 def cornerHelper(node,cornerList):
 
