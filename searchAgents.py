@@ -526,8 +526,13 @@ def foodHeuristic(state, problem):
     """
     position, foodGrid = state
     "*** YOUR CODE HERE ***"
-    return cornerHelper(position, foodGrid.asList())
+    #return cornerHelper(position, foodGrid.asList())
+    food_list = foodGrid.asList()
 
+    heuristic = 0
+    for food in food_list:
+        heuristic = max(heuristic, abs(position[0] - food[0]) + abs(position[1] - food[1]))
+    return heuristic
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
